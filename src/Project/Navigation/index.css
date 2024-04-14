@@ -1,0 +1,29 @@
+.wd-mm-navigation {
+    background-color: #CC8F00;
+    list-style: none;
+}
+
+.wd-mm-navigation li.wd-active {
+    background-color: white;
+}
+
+.wd-mm-navigation li.wd-active a {
+    color: #CC8F00;
+}
+
+.wd-mm-navigation a {
+    color: white;
+    text-decoration: none;
+}
+
+.wd-mm-navigation li svg {
+    font-size: 2em;
+    color: white;
+}
+.wd-mm-navigation li.wd-active svg {
+    color: #CC8F00;
+}
+
+.wd-size {
+    height: 100vh;
+}
