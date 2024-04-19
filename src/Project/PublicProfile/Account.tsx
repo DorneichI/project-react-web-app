@@ -1,25 +1,26 @@
 import { useParams } from "react-router";
 import * as client from "../../Users/client";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentUser } from "../../Users/userReducer";
 
 function Account() {
-    const [profile, setProfile] = useState<client.User>({ _id: "", username: "", password: "", email: "", following: [], followers: [], role: "USER" });
+    const [profile, setProfile] = useState<client.User>(
+        { _id: "", username: "", password: "", email: "",
+        following: [], followers: [],
+        likesMovies: [], dislikesMovies: [],
+        role: "USER" });
     const fetchProfile = async () => {
         const account = await client.profileByUsername(username);
         setProfile(account);
     };
 
     const { username } = useParams();
-    const [currentUser, setUser] = useState<client.User>({ _id: "", username: "", password: "", email: "", following: [], followers: [], role: "USER" });
-    const fetchUser = async () => {
-        const account = await client.profile();
-        setUser(account);
-    };
+    const { currentUser } = useSelector((state: any) => state.user);
 
+    const dispatch = useDispatch();
     useEffect(() => {
         fetchProfile();
-        fetchUser();
     }, [username]);
 
 
@@ -31,14 +32,14 @@ function Account() {
     };
 
     useEffect(() => {
-        currentUser._id !== "" && profile._id !== "" && save();
+        currentUser && currentUser._id !== "" && profile._id !== "" && save();
     }, [currentUser])
 
 
     const follow = () => {
         if (currentUser && currentUser.username === username || currentUser.following.includes(profile._id)) {
         } else {
-            setUser(user => { return {...user, following: [...user.following, profile._id]}});
+            dispatch(setCurrentUser({...currentUser, following: [...currentUser.following, profile._id]}));
             setProfile(profile => { return {...profile, followers: [...profile.followers, currentUser._id]}});
         }
     }
@@ -46,7 +47,7 @@ function Account() {
     const unfollow = () => {
         if (currentUser && currentUser.username === username || !currentUser.following.includes(profile._id)) {
         } else {
-            setUser(user => { return {...user, following: user.following.filter(id => id !== profile._id)}});
+            dispatch(setCurrentUser({...currentUser, following: currentUser.following.filter((id: string) => id !== profile._id)}))
             setProfile(profile => { return {...profile, followers: profile.followers.filter(id => id !== currentUser._id)}});
         }
     }
@@ -54,8 +55,8 @@ function Account() {
         <>
             <div className="d-flex">
                 <h3 >Account</h3>
-                { !currentUser.following.includes(profile._id) && <button className="btn btn-dark ms-3" onClick={follow}>Follow</button> }
-                { currentUser.following.includes(profile._id) && <button className="btn btn-dark ms-3" onClick={unfollow}>Unfollow</button> }
+                { currentUser && !currentUser.following.includes(profile._id) && <button className="btn btn-dark ms-3" onClick={follow}>Follow</button> }
+                { currentUser && currentUser.following.includes(profile._id) && <button className="btn btn-dark ms-3" onClick={unfollow}>Unfollow</button> }
             </div>
             <div className="p-2">
                 <div className="row">

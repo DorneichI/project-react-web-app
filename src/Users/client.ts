@@ -2,7 +2,10 @@ import axios from "axios";
 export const BASE_API = process.env.REACT_APP_API_BASE;
 export const USERS_API = `${BASE_API}/api/users`;
 export const POSTS_API = `${BASE_API}/api/posts`;
-export interface User { _id: string; username: string; password: string; email: string; following: string[], followers: string[], role: string; };
+export interface User { _id: string; username: string; password: string; email: string;
+    following: string[], followers: string[],
+    likesMovies: string[], dislikesMovies: string[],
+    role: string; };
 
 const axiosWithCredentials = axios.create({
     withCredentials: true
@@ -20,10 +23,6 @@ export const profileByUsername = async (username: any) => {
     const response = await axiosWithCredentials.post(`${USERS_API}/profile/${username}`);
     return response.data;
 };
-// export const addFollower = async (username: any, follower: any) => {
-//     const response = await axios.put(`${USERS_API}/followers/${username}/${follower}`);
-//     return response.data;
-// }
 export const updateUser = async (user: any) => {
     const response = await axiosWithCredentials.put(`${USERS_API}/${user._id}`, user);
     return response.data;
@@ -53,7 +52,6 @@ export const signout = async () => {
     const response = await axiosWithCredentials.post(`${USERS_API}/signout`);
     return response.data;
 };
-
 export const findAllPosts = async () => {
     const response = await axios.get(`${POSTS_API}`);
     return response.data;

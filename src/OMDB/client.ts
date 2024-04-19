@@ -50,3 +50,7 @@ export const movieByMovieID = async (movieId: string) => {
     const response = await axios.get(`${BASE_API}/api/movies/${movieId}`);
     return response.data;
 };
+export const findAllMovies = async () => {
+    const response = await axios.get(`${BASE_API}/api/movies`);
+    return response.data;
+}

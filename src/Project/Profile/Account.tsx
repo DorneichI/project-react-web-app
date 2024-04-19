@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import * as client from "../../Users/client";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentUser } from "../../Users/userReducer";
 
 
 
 function Account() {
-    const [profile, setProfile] = useState<client.User>({ _id: "", username: "", password: "", email: "", followers: [], following: [], role: "USER" });
-    const fetchProfile = async () => {
-        const account = await client.profile();
-        setProfile(account);
-    };
-    useEffect(() => {
-        fetchProfile();
-    }, []);
+    const { currentUser } = useSelector((state: any) => state.user);
+    const [profile, setProfile] = useState<client.User>(currentUser);
+    
+    const dispatch = useDispatch();
     const save = async () => {
         await client.updateUser(profile);
+        dispatch(setCurrentUser(profile));
     };
     return (
         <>
@@ -52,11 +51,19 @@ function Account() {
                 <div className="row">
                     <label className="col-sm-3 col-md-2 col-lg-1 p-2">Followers:</label>
                     <div className="col-sm-2 col-md-1 col-lg-1">
-                        <Link to={`Followers`} className="btn btn-secondary">{profile.followers.length}</Link>
+                        <Link to={`Followers`} className="btn btn-secondary">{currentUser.followers.length}</Link>
                     </div>
                     <label className="col-sm-3 col-md-2 col-lg-1 p-2">Following:</label>
                     <div className="col-sm-4 col-md-7 col-lg-9">
-                        <Link to={`Following`} className="btn btn-secondary">{profile.following.length}</Link>
+                        <Link to={`Following`} className="btn btn-secondary">{currentUser.following.length}</Link>
+                    </div>
+                    <label className="col-sm-3 col-md-2 col-lg-1 p-2">Liked:</label>
+                    <div className="col-sm-2 col-md-1 col-lg-1">
+                        <Link to={`Liked`} className="btn btn-secondary">{currentUser.likesMovies.length}</Link>
+                    </div>
+                    <label className="col-sm-3 col-md-2 col-lg-1 p-2">Disliked:</label>
+                    <div className="col-sm-4 col-md-7 col-lg-9">
+                        <Link to={`Disliked`} className="btn btn-secondary">{currentUser.dislikesMovies.length}</Link>
                     </div>
                 </div>
                 <div className="row">

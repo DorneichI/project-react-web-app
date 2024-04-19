@@ -1,5 +1,5 @@
 .wd-mm-navigation {
-    background-color: #CC8F00;
+    background-color: black;
     list-style: none;
 }
 
@@ -8,7 +8,7 @@
 }
 
 .wd-mm-navigation li.wd-active a {
-    color: #CC8F00;
+    color: black;
 }
 
 .wd-mm-navigation a {
@@ -21,7 +21,7 @@
     color: white;
 }
 .wd-mm-navigation li.wd-active svg {
-    color: #CC8F00;
+    color: black;
 }
 
 .wd-size {

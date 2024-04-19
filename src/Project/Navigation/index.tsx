@@ -16,8 +16,8 @@ function Navigation() {
             <div className="d-block d-sm-none">
                 <ul className="nav wd-mm-navigation">
                     {links.map((link, index) => (
-                        <li key={index} className={`nav-item text-center ps-5 pe-5 pt-2 pb-2 ${pathname.includes(link.label) ? "wd-active" : ""}`} >
-                            <Link to={`/MustardMatrix/${link.label}`}> {link.icon} <br/> {link.label}  </Link>
+                        <li key={index} className={`nav-item text-center p-2 ${pathname.includes(link.label) ? "wd-active" : ""}`} >
+                            <Link to={`/MovieMatrix/${link.label}`}> {link.icon} <br/> {link.label}  </Link>
                         </li>
                     ))}
                 </ul>
@@ -28,8 +28,8 @@ function Navigation() {
 
                     </li>
                     {links.map((link, index) => (
-                        <li key={index} className={`nav-item text-center ps-4 pe-4 pt-5 pb-5 ${pathname.includes(link.label) ? "wd-active" : ""}`} >
-                            <Link to={`/MustardMatrix/${(link.label === "Profile" && !currentUser) ? "SignIn" : link.label}`}> {link.icon} <br/> {link.label}  </Link>
+                        <li key={index} className={`nav-item text-center p-2 ${pathname.includes(link.label) ? "wd-active" : ""}`} >
+                            <Link to={`/MovieMatrix/${(link.label === "Profile" && !currentUser) ? "SignIn" : link.label}`}> {link.icon} <br/> {link.label}  </Link>
                         </li>
                     ))}
                 </ul>

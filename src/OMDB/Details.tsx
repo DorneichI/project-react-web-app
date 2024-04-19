@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import * as client from "./client";
+import * as omdbClient from "./client";
+import * as userClient from "../Users/client";
 import * as profileClient from "../Users/client";
 import { FaThumbsUp, FaThumbsDown, FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa6";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Posts from "./Posts";
+import { setCurrentUser } from "../Users/userReducer";
 
 function OMDBDetails() {
     const { currentUser } = useSelector((state: any) => state.user);
@@ -14,11 +17,11 @@ function OMDBDetails() {
     const [dbMovie, setDbMovie] = useState<any>({});
 
     const findMovieByID = async (movieId: string) => {
-        const movie = await client.movieByID(movieId);
+        const movie = await omdbClient.movieByID(movieId);
         setMovie(movie);
     };
     const findMovieByMovieID = async (movieId: string) => {
-        const movie = await client.movieByMovieID(movieId);
+        const movie = await omdbClient.movieByMovieID(movieId);
         setDbMovie(movie);
     };
 
@@ -29,56 +32,64 @@ function OMDBDetails() {
         }
     }, [imdbID]);
 
+    const dispatch = useDispatch();
     const like = async () => {
         if (currentUser) {
             if ((!dbMovie || !dbMovie.likedBy.includes(currentUser._id))) {
-                const response = await client.userLikesMovie({
+                const response = await omdbClient.userLikesMovie({
                     title: movie.Title,
                     movieId: movie.imdbID,
                 });
                 if (dbMovie && dbMovie.dislikedBy.includes(currentUser._id)) {
                     dislike();
-                }
-                setDbMovie(response);
+                };
+                console.log("response", response, "movie", response.movie);
+                setDbMovie(response.movie);
+                console.log("dbMovie", dbMovie);
+                dispatch(setCurrentUser(response.user));
             } else {
-                const response = await client.userUnlikesMovie({
+                const response = await omdbClient.userUnlikesMovie({
                     title: movie.Title,
                     movieId: movie.imdbID,
-                })
-                setDbMovie(response);
+                });
+                console.log(response, response.movie);
+                setDbMovie(response.movie);
+                dispatch(setCurrentUser(response.user));
             }
         } else {
-            navigate("/MustardMatrix/SignIn");
+            navigate("/MovieMatrix/SignIn");
         }
     };
     const dislike = async () => {
         if (currentUser) {
             if ((!dbMovie || !dbMovie.dislikedBy.includes(currentUser._id))) {
-                const response = await client.userDislikesMovie({
+                const response = await omdbClient.userDislikesMovie({
                     title: movie.Title,
                     movieId: movie.imdbID,
                 });
                 if (dbMovie && dbMovie.likedBy.includes(currentUser._id)) {
                     like();
-                }
-                setDbMovie(response);
+                };
+                console.log(response, response.movie);
+                setDbMovie(response.movie);
+                dispatch(setCurrentUser(response.user));
             } else {
-                const response = await client.userUndislikesMovie({
+                const response = await omdbClient.userUndislikesMovie({
                     title: movie.Title,
                     movieId: movie.imdbID,
-                })
-                setDbMovie(response);
+                });
+                console.log(response, response.movie);
+                setDbMovie(response.movie);
+                dispatch(setCurrentUser(response.user));
             }
         } else {
-            navigate("/MustardMatrix/SignIn");
+            navigate("/MovieMatrix/SignIn");
         }
     }
 
     return(
         <div className="p-4">
             {movie && <>
-            {/* {JSON.stringify(dbMovie)}
-            {currentUser && <>{currentUser.username}</>} */}
             <div className="d-flex justify-content-center">
                 <h1>{movie.Title}</h1>
             </div>
@@ -86,18 +97,25 @@ function OMDBDetails() {
             <div className="d-flex justify-content-center">
                 {movie.Poster !== "N/A" && <img src={movie.Poster} />}
             </div>
+            
             <div className="d-flex justify-content-center">
                 <button className="btn btn-secondary align-self-center m-2" onClick={like}>
-                    {(dbMovie && dbMovie.likedBy.includes(currentUser._id)) &&
-                        <FaThumbsUp className="" />}
-                    {!(dbMovie && dbMovie.likedBy.includes(currentUser._id)) &&
-                        <FaRegThumbsUp className="" />}
+                    {currentUser && <>
+                        {(dbMovie && dbMovie.likedBy.includes(currentUser._id)) &&
+                            <FaThumbsUp className="" />}
+                        {!(dbMovie && dbMovie.likedBy.includes(currentUser._id)) &&
+                            <FaRegThumbsUp className="" />}
+                    </>}
+                    {!currentUser && <FaRegThumbsUp className="" />}
                 </button>
                 <button className="btn btn-secondary align-self-center m-2" onClick={dislike}>
-                    {(dbMovie && dbMovie.dislikedBy.includes(currentUser._id)) &&
-                        <FaThumbsDown className="" />}
-                    {!(dbMovie && dbMovie.dislikedBy.includes(currentUser._id)) &&
-                        <FaRegThumbsDown className="" />}
+                    {currentUser && <>
+                        {(dbMovie && dbMovie.dislikedBy.includes(currentUser._id)) &&
+                            <FaThumbsDown className="" />}
+                        {!(dbMovie && dbMovie.dislikedBy.includes(currentUser._id)) &&
+                            <FaRegThumbsDown className="" />}
+                     </>}
+                     {!currentUser && <FaRegThumbsDown className="" />}
                 </button>
             </div>
             Year: {movie.Year}<br/>
@@ -112,6 +130,8 @@ function OMDBDetails() {
             Language: {movie.Language}<br/>
             Country: {movie.Country}<br/>
             Awards: {movie.Awards}<br/>
+            <hr/>
+            <Posts title={movie.Title} id={movie.imdbID}/>
             </>
             }
         </div>

@@ -16,8 +16,10 @@ import Followers from "./Profile/Followers";
 import OMDBSearch from "../OMDB/Search";
 import OMDBDetails from "../OMDB/Details";
 import SignUp from "../Users/SignUp";
+import Liked from "./Profile/Liked";
+import Disliked from "./Profile/Disliked";
 
-function MustardMatrix() {
+function MovieMatrix() {
 
     return (
         <Provider store={store}>
@@ -39,6 +41,8 @@ function MustardMatrix() {
                         <Route path="Profile/:username" element={<PublicProfile />} />
                         <Route path="Profile/Following" element={<Following />} />
                         <Route path="Profile/Followers" element={<Followers />} />
+                        <Route path="Profile/Liked" element={<Liked />} />
+                        <Route path="Profile/Disliked" element={<Disliked />} />
                         <Route path="Profile" element={<Profile />} />
                         <Route path="SignIn" element={<SignIn />} />
                         <Route path="SignUp" element={<SignUp />} />
@@ -50,4 +54,4 @@ function MustardMatrix() {
     );
 };
 
-export default MustardMatrix;
+export default MovieMatrix;

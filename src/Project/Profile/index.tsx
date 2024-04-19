@@ -1,37 +1,39 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Account from "./Account";
 import Posts from "./Posts";
-import * as client from "../../Users/client";
-import PublicProfile from "../PublicProfile";
+import SignInOut from "../../Users/SignInOut";
+import { useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router";
+import Users from "../../Users/Users";
 
 function Profile() {
-    const { username } = useParams();
+    const { currentUser } = useSelector((state: any) => state.user);
 
-    const navigate = useNavigate();
-    const signout = async () => {
-        await client.signout();
-        navigate("/MustardMatrix/SignIn");
-    };
 
     return (
+        <>
+        {currentUser &&
         <div className="p-4 ">
             <div className="d-flex">
                 <div>
                     <h1>Profile</h1>
                 </div>
                 <div className="ms-auto">
-                    <button className="btn btn-dark" onClick={signout}>Sign Out</button>
+                    <SignInOut />
                 </div>
             </div>
             <hr/>
             <Account />
             <hr/>
-            <div>
-                <h3>Posts</h3>
-                <Posts />
-            </div>
+            <Posts />
+            {currentUser.role === "ADMIN" &&
+            <><hr/>
+            <Users />
+            </>}
         </div>
-        
+        }
+        {!currentUser &&
+        <Navigate to="/MovieMatrix/SignIn" />}
+        </>
     );
 };
 

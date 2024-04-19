@@ -1,6 +1,6 @@
 import * as client from "./client";
 import { useDispatch } from "react-redux";
-import { setCurrentUser } from "../Project/Profile/userReducer";
+import { setCurrentUser } from "./userReducer";
 import { useEffect } from "react";
 
 export default function CurrentUser({ children }: { children: any }) {
@@ -9,7 +9,7 @@ export default function CurrentUser({ children }: { children: any }) {
     try {
         const currentUser = await client.profile();
         dispatch(setCurrentUser(currentUser));
-    } catch (error) {
+    } catch (err: any) {
         dispatch(setCurrentUser(null));
     }
   };

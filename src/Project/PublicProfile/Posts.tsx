@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import * as client from "../../Users/client";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function Posts() {
     const [profile, setProfile] = useState({ _id:"", username: "", password: "", email: "", role: "USER" });
     const { username } = useParams();
-    const { currentUser } = useSelector((state: any) => state.user);
 
     const fetchProfile = async () => {
         const account = await client.profileByUsername(username);
@@ -25,7 +25,7 @@ function Posts() {
 
     return (
         <>
-            <h5>Recent Posts</h5>
+            <h3>Recent Posts</h3>
             <div className="p-2">
                 <div className="row">
                     <div className="row row-cols-1">
@@ -35,23 +35,13 @@ function Posts() {
                                     <div className="d-flex">
                                         <div className="me-auto">
                                             <h5 className="card-title">{post.title}</h5>
-                                        </div>
-                                        <div>
-                                            {/* <button className="btn btn-warning me-2" onClick={() => selectPost(post)}>
-                                                <FaRegPenToSquare className="fs-5 text" />
-                                            </button>
-                                            <button className="btn btn-danger me-2" onClick={() => deletePost(post)}>
-                                                <FaRegTrashCan className="fs-5 text" />
-                                            </button> */}
+                                            <Link to={`/MovieMatrix/Details/${post.movieId}`}>{post.movieTitle}</Link>
                                         </div>
                                     </div>
                                     <p className="card-text mb-0">{post.body}</p>
                                     <div className="d-flex">
                                         <div className="me-auto">
                                             Date: {post.date.toLocaleString()}
-                                        </div>
-                                        <div>
-                                            {post.privacy === "PUBLIC" ? "Public" : "Private"}
                                         </div>
                                     </div>
                                 </div>
