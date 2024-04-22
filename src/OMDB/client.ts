@@ -22,35 +22,35 @@ export const movieByID = async (id: string) => {
 }
 export const userLikesMovie = async (movie: any) => {
     const response = await axiosWithCredentials.post(
-      `${BASE_API}/api/likes`,
+      `${BASE_API}/projectapi/likes`,
       movie
     );
     return response.data;
 };
 export const userUnlikesMovie = async (movie: any) => {
     const response = await axiosWithCredentials.delete(
-      `${BASE_API}/api/likes/${movie.movieId}`
+      `${BASE_API}/projectapi/likes/${movie.movieId}`
     );
     return response.data;
 };
 export const userDislikesMovie = async (movie: any) => {
     const response = await axiosWithCredentials.post(
-      `${BASE_API}/api/dislikes`,
+      `${BASE_API}/projectapi/dislikes`,
       movie
     );
     return response.data;
 };
 export const userUndislikesMovie = async (movie: any) => {
     const response = await axiosWithCredentials.delete(
-      `${BASE_API}/api/dislikes/${movie.movieId}`
+      `${BASE_API}/projectapi/dislikes/${movie.movieId}`
     );
     return response.data;
 };
 export const movieByMovieID = async (movieId: string) => {
-    const response = await axios.get(`${BASE_API}/api/movies/${movieId}`);
+    const response = await axios.get(`${BASE_API}/projectapi/movies/${movieId}`);
     return response.data;
 };
 export const findAllMovies = async () => {
-    const response = await axios.get(`${BASE_API}/api/movies`);
+    const response = await axios.get(`${BASE_API}/projectapi/movies`);
     return response.data;
 }

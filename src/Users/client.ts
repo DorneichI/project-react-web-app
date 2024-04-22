@@ -1,7 +1,7 @@
 import axios from "axios";
 export const BASE_API = process.env.REACT_APP_API_BASE;
-export const USERS_API = `${BASE_API}/api/users`;
-export const POSTS_API = `${BASE_API}/api/posts`;
+export const USERS_API = `${BASE_API}/projectapi/users`;
+export const POSTS_API = `${BASE_API}/projectapi/posts`;
 export interface User { _id: string; username: string; password: string; email: string;
     following: string[], followers: string[],
     likesMovies: string[], dislikesMovies: string[],

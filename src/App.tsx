@@ -1,7 +1,7 @@
 import {HashRouter} from "react-router-dom";
 import {Routes, Route, Navigate} from "react-router";
 
-import MovieMatrix from "./Project";
+import MovieMatrix from "./MovieMatrix";
 
 function App() {
     return (
