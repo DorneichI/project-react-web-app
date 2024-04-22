@@ -5,7 +5,7 @@ import * as movieClient from "../../OMDB/client";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCaretLeft } from "react-icons/fa6";
 
-function Liked() {
+function Disliked() {
     const [profile, setProfile] = useState<userClient.User>(
         { _id: "", username: "", password: "", email: "",
         following: [], followers: [],
@@ -19,7 +19,6 @@ function Liked() {
     const fetchMovies = async () => {
         const movies = await movieClient.findAllMovies();
         setMovies(movies);
-        console.log(movies);
     };
     useEffect(() => {
         fetchProfile();
@@ -33,7 +32,7 @@ function Liked() {
             <div className="d-flex">
                 <div className="d-flex">
                     <FaCaretLeft className="fs-2 m-2" onClick={() => navigate("/MovieMatrix/Profile")}/>
-                    <h1>Liked</h1>
+                    <h1>Disliked</h1>
                 </div>
                 <div className="ms-auto">
                     <SignInOut />
@@ -42,8 +41,8 @@ function Liked() {
             <hr/>
             <div className="list-group list-group-flush">
                 {movies && movies.map((movie: any) => (
-                    <div key={movie.movieId} className={movie.likedBy.includes(profile._id) ? "list-group-item" : ""}>
-                    {movie.likedBy.includes(profile._id) && 
+                    <div key={movie.movieId} className={movie.dislikedBy.includes(profile._id) ? "list-group-item" : ""}>
+                    {movie.dislikedBy.includes(profile._id) && 
                             <Link to={`/MovieMatrix/Details/${movie.movieId}`}>{movie.title}</Link >
                     }
                     </div>
@@ -53,4 +52,4 @@ function Liked() {
     );
 };
 
-export default Liked;
+export default Disliked;

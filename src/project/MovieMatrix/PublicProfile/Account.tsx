@@ -26,7 +26,6 @@ function Account() {
 
 
     const save = async () => {
-        console.log()
         await client.updateUser(currentUser);
         await client.updateUser(profile);
     };

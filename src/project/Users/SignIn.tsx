@@ -19,7 +19,6 @@ function SignIn() {
             dispatch(setCurrentUser(currentUser));
             navigate(`/MovieMatrix/Profile/`);
         } catch (err: any) {
-            console.log("this is the error", err, "this is the message", err.response.data.message)
             setError(err.response.data.message);
         }
     };

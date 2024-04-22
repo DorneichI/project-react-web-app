@@ -16,7 +16,6 @@ function SignInOut() {
         };
         client.signout();
         dispatch(setCurrentUser(null));
-        console.log(pathname)
     }
     return(
         <>

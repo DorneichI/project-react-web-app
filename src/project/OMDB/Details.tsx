@@ -43,16 +43,13 @@ function OMDBDetails() {
                 if (dbMovie && dbMovie.dislikedBy.includes(currentUser._id)) {
                     dislike();
                 };
-                console.log("response", response, "movie", response.movie);
                 setDbMovie(response.movie);
-                console.log("dbMovie", dbMovie);
                 dispatch(setCurrentUser(response.user));
             } else {
                 const response = await omdbClient.userUnlikesMovie({
                     title: movie.Title,
                     movieId: movie.imdbID,
                 });
-                console.log(response, response.movie);
                 setDbMovie(response.movie);
                 dispatch(setCurrentUser(response.user));
             }
@@ -70,7 +67,6 @@ function OMDBDetails() {
                 if (dbMovie && dbMovie.likedBy.includes(currentUser._id)) {
                     like();
                 };
-                console.log(response, response.movie);
                 setDbMovie(response.movie);
                 dispatch(setCurrentUser(response.user));
             } else {
@@ -78,7 +74,6 @@ function OMDBDetails() {
                     title: movie.Title,
                     movieId: movie.imdbID,
                 });
-                console.log(response, response.movie);
                 setDbMovie(response.movie);
                 dispatch(setCurrentUser(response.user));
             }

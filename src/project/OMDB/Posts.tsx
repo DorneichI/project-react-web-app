@@ -46,8 +46,6 @@ function Posts({ title, id }: { title: string, id: string }) {
     const createPost = async () => {
         if (currentUser) {
             try {
-                console.log(post);
-
                 const p = {...post, userId: currentUser._id};
                 const newPost = await client.createPost(p);
                 setPosts([newPost, ...posts]);
